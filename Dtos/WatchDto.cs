@@ -2,11 +2,14 @@ namespace WatchList.Dtos
 {
     public class WatchDto
     {
-        public string Brand { get; set; }
-        public string Model { get; set; }
-        public string Color { get; set; }
-        public decimal Price { get; set; }
-        public string ImageUrl { get; set; } 
+        public int WatchId { get; set; }
+        public string BrandName { get; set; }
+        public string ModelName { get; set; }
+        public int SerialNumber { get; set; }
+        public int YearMade { get; set; }
+        public decimal PurchasePrice { get; set; }
+        public string ImageUrl { get; set; }
+        public DateTime DateAdded { get; set; }
     }
 }
 

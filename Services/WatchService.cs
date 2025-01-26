@@ -1,37 +1,32 @@
 using FluentResults;
+using Microsoft.EntityFrameworkCore;
 using WatchList.Dtos;
 using WatchList.Models;
+using WatchList.Services.Interfaces;
 
-public class WatchService : IWatchService
+namespace WatchList.Services
 {
-    private readonly IWatchRepository _watchRepository;
-    private readonly IUploadService _uploadService;
-
-    public WatchService(IWatchRepository watchRepository, IUploadService uploadService)
+    public class WatchService : IWatchService
     {
-        _watchRepository = watchRepository;
-        _uploadService = uploadService;
-    }
+        private readonly ApplicationDbContext _dbContext;
 
-    public async Task<Result<Watch>> AddWatchAsync(WatchDto watchDto)
-    {
-        // Handle image upload if present
-        if (watchDto.ImageUrl != null)
+        public WatchService(ApplicationDbContext dbContext)
         {
-            var imageUrl = await _uploadService.UploadImageAsync(watchDto.ImageUrl);
-            watchDto.ImageUrl = imageUrl;
+            _dbContext = dbContext;
         }
 
-        var watch = new Watch
+        public async Task<Result<Watch>> GetWatchByIdAsync(int watchId)
         {
-            Brand = watchDto.Brand,
-            Model = watchDto.Model,
-            Price = watchDto.Price,
-            ImageUrl = watchDto.ImageUrl
-        };
+            var watch = await _dbContext.Watch
+                .AsNoTracking()
+                .FirstOrDefaultAsync(w => w.WatchId == watchId);
 
-        await _watchRepository.AddWatchAsync(watch);
+            if (watch == null)
+            {
+                return Result.Fail<Watch>($"Watch with ID {watchId} not found.");
+            }
 
-        return new Result<Watch> { Success = true, Watch = watch };
+            return Result.Ok(watch);
+        }
     }
 }

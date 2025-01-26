@@ -8,12 +8,11 @@ namespace WatchList.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IPasswordHasher _passwordHasher;  // Assuming you have a password hashing service
+        // private readonly IPasswordHasher _passwordHasher;  // Assuming you have a password hashing service
 
-        public UserService(IUserRepository userRepository, IPasswordHasher passwordHasher)
+        public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _passwordHasher = passwordHasher;
         }
 
         public async Task<User> GetUserByIdAsync(int id)
@@ -21,30 +20,30 @@ namespace WatchList.Services
             return await _userRepository.GetUserByIdAsync(id);
         }
 
-        public async Task<User> RegisterUserAsync(UserDto userDto, string password)
-        {
-            // Hash the password before saving it
-            var passwordHash = _passwordHasher.HashPassword(password);
+        // public async Task<User> RegisterUserAsync(UserDto userDto, string password)
+        // {
+        //     // Hash the password before saving it
+        //     var passwordHash = _passwordHasher.HashPassword(password);
 
-            var user = new User
-            {
-                Username = userDto.Username,
-                Email = userDto.Email,
-                PasswordHash = passwordHash,
-                Role = userDto.Role,
-                CreatedAt = DateTime.UtcNow
-            };
+        //     var user = new User
+        //     {
+        //         Username = userDto.Username,
+        //         Email = userDto.Email,
+        //         PasswordHash = passwordHash,
+        //         Role = userDto.Role,
+        //         CreatedAt = DateTime.UtcNow
+        //     };
 
-            return await _userRepository.AddUserAsync(user);
-        }
+        //     return await _userRepository.AddUserAsync(user);
+        // }
 
-        public async Task<bool> ValidateUserAsync(string username, string password)
-        {
-            var user = await _userRepository.GetUserByUsernameAsync(username);
-            if (user == null) return false;
+        // public async Task<bool> ValidateUserAsync(string username, string password)
+        // {
+        //     var user = await _userRepository.GetUserByUsernameAsync(username);
+        //     if (user == null) return false;
 
-            // Compare the hashed password
-            return _passwordHasher.VerifyPassword(password, user.PasswordHash);
-        }
+        //     // Compare the hashed password
+        //     return _passwordHasher.VerifyPassword(password, user.PasswordHash);
+        // }
     }
 }

@@ -2,10 +2,13 @@ using FluentResults;
 using WatchList.Dtos;
 using WatchList.Models;
 
-public interface IWatchService
+namespace WatchList.Services.Interfaces
 {
-    Task<Result<Watch>> AddWatchAsync(WatchDto watchDto);
-    Task<Result<Watch>> UpdateWatchAsync(int id, WatchDto watchDto);
-    Task<Watch> GetWatchByIdAsync(int id);
-    Task<IEnumerable<Watch>> GetAllWatchesAsync();
+    public interface IWatchService
+    {
+        //Task<Result<Watch>> AddWatchAsync(WatchDto watchDto);
+        //Task<Result<Watch>> UpdateWatchAsync(int id, WatchDto watchDto);
+        Task<Result<Watch>> GetWatchByIdAsync(int id);
+        //Task<IEnumerable<Watch>> GetAllWatchesAsync();
+    }
 }
