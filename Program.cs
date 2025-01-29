@@ -7,9 +7,24 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Register the DbContext
+// Add user secrets in development
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Program>();
+}
+
+// Build the connection string dynamically
+var connectionString = builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value;
+var dbPassword = builder.Configuration["DbPassword"];
+
+if (!string.IsNullOrEmpty(dbPassword))
+{
+    connectionString = connectionString.Replace("Password=UPDATE_ON_SERVER", $"Password={dbPassword}");
+}
+
+// Register the DbContext using the updated connection string
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(connectionString));
 
 // Register IWatchService
 builder.Services.AddScoped<IWatchService, WatchService>();
