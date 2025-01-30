@@ -13,14 +13,25 @@
 
 ## Architecture Overview
 
-### Back-End Services:
+### Front-end and Back-End Services:
+1. **Azure Web Apps**:
+   - **Purpose**: Hosts both the frontend and backend of the application.
+   - **Usage**:
+   1. **Frontend**: Host the React web pages of this application, which the users can access via the browser
+   2. **Backend**: The backend APIs handle the server-side logic, like user authentication, CRUD operations for watch data, and interaction with the database.
+
+
+### Storage and Background Services:
 1. **Azure Blob Storage**:
    - **Purpose**: Stores images of watches uploaded by users.
    - **Usage**: When a user uploads a watch image, it’s stored in Azure Blob Storage, and the URL is linked to the user's watch record in the database.
 
 2. **Azure Functions**:
-   - **Purpose**: Handles background operations, such as notifications and calculations related to watch values.
-   - **Usage**: For instance, an Azure Function checks when a watch's market value changes and sends notifications to the user.
+   - **Purpose**: Event-driven serverless, background tasks
+   - **Usage**: 
+      1. Upload event to process the image (e.g., resize, optimize, or generate thumbnail) of watch image and store in Azure Blob storage
+      2. Store image metadata (file URL, size) in the database
+      3. Background tasks like sending notifications
 
 3. **Azure API Management**:
    - **Purpose**: Exposes backend APIs for managing watch data.
@@ -66,7 +77,7 @@
 ## Why This Project Works as a Learning Tool
 
 ### 1. **Comprehensive Use of Azure Services**:
-   You'll gain hands-on experience with essential Azure services like Blob Storage, API Management, Functions, Service Bus, and Monitor. This demonstrates your ability to integrate multiple Azure components into a cohesive solution.
+  Gain hands-on experience with essential Azure services like Blob Storage, API Management, Functions, Service Bus, and Monitor. This demonstrates your ability to integrate multiple Azure components into a cohesive solution.
 
 ### 2. **Simple Yet Scalable**:
    While the functionality is straightforward, the project offers a robust foundation for learning about scalable architecture and can evolve into a more complex application with advanced features.

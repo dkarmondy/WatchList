@@ -11,3 +11,12 @@
 *.user
 *.suo
 *.swp
+
+# Ignore AssemblyInfo.cs if auto-generated or not needed in source control
+**/AssemblyInfo.cs
+
+# Ignore .cache files
+**/.cache
+
+# Ignore appsettings.json
+appsettings.json
